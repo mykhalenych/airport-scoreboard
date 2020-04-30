@@ -1,91 +1,88 @@
-import React, { useState, useEffect } from "react";
-import {
-  useHistory,
-  useLocation,
-  useParams,
-  Route,
-  Link,
-  Switch,
-} from "react-router-dom";
+import React, { useState } from "react";
+import { useLocation, Route, Link, Switch, useParams } from "react-router-dom";
 import Arrival from "./Arrival";
 import Departure from "./Departure";
 import "./main.scss";
+import qs from "qs";
+import SearchSharpIcon from "@material-ui/icons/SearchSharp";
+import FlightLandSharpIcon from "@material-ui/icons/FlightLandSharp";
+import FlightTakeoffSharpIcon from "@material-ui/icons/FlightTakeoffSharp";
 
 const Main = ({ scoreboardList }) => {
+  const a = useParams();
+  console.log(a);
   const [value, setValue] = useState("");
-  const [directionFlight, SetFlight] = useState("");
 
-  let history = useHistory();
-  let location = useLocation();
-  const { flight, direction } = useParams();
-
-  useEffect(() => {
-    if (value) {
-      history.push(`${location.pathname}/${value}`);
-    }
-  }, [direction]);
+  const search = qs.parse(useLocation().search, { ignoreQueryPrefix: true })
+    .search;
+  let allFlights = !search
+    ? scoreboardList
+    : scoreboardList.departure.filter((flight) => {
+        return flight.codeShareData[0].codeShare === search;
+      });
 
   const onChange = (event) => {
     setValue(event.target.value);
-  };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (flight && value) {
-      return;
-    }
-
-    value
-      ? history.push(`${location.pathname}/${value}`)
-      : history.push(`/${direction}`);
-  };
-  const onAarival = () => {
-    SetFlight("arrivel");
-  };
-  const onDeparture = () => {
-    SetFlight("departure");
   };
 
   return (
     <div className="wrap">
       <section className="scoreboard">
         <h2 className="scoreboard__title">Пошук Рейсу</h2>
-        <form onSubmit={handleSubmit} className="scoreboard__form">
-          <label>
-            
+        <form
+          //onSubmit={handleSubmit}
+          className="scoreboard__form"
+        >
+          <div className="scoreboard__form">
             <input
               className="scoreboard__form-search"
               defaultValue={"Номер рейсу або місто"}
               value={value}
               onChange={onChange}
               name="input"
+              placeholder="Для пошуку напишіть номер рейсу"
             />
-          </label>
+            <SearchSharpIcon className="scoreboard__form-icon" />
+          </div>
           <button className="scoreboard__form-submit" type="submit">
-            Пошук
+            <Link to={`/departure?search=${value}`}>Пошук</Link>
           </button>
         </form>
       </section>
       <div className="conteiner">
-        <button className="conteiner__arrivel-btn">
-          <Link to="/arrivel" onClick={onAarival}>
-            arrivel
-          </Link>
+        <button className={`conteiner__btn`}>
+          <FlightTakeoffSharpIcon />
+          <Link to="/departure">departure</Link>
         </button>
-        <button className="conteiner__departure-btn">
-          <Link to="/departure" onClick={onDeparture}>
-            departure
-          </Link>
+        <button className="conteiner__btn">
+          <FlightLandSharpIcon />
+          <Link to="/arrivel">arrivel</Link>
         </button>
       </div>
-      <Switch>
-        <Route path="/arrivel">
-          <Arrival scoreboardList={scoreboardList} />
-        </Route>
-        <Route path="/departure">
-          <Departure scoreboardList={scoreboardList} />
-        </Route>
-      </Switch>
+      <table className="scoreboardList">
+        <thead className="scoreboardList-header">
+          <tr className="scoreboardList-header__tr">
+            <th>Термінал</th>
+            <th>Розклад</th>
+            <th>Призначення</th>
+            <th>Статус</th>
+            <th>Авіакомпанія</th>
+            <th>Рейс</th>
+          </tr>
+        </thead>
+
+        <Switch>
+          <Route path="/arrivel">
+            <Arrival scoreboardList={scoreboardList} />
+          </Route>
+          <Route path="/departure">
+            <Departure
+              scoreboardList={scoreboardList}
+              allFlights={allFlights}
+            />
+          </Route>
+        </Switch>
+      </table>
     </div>
   );
 };

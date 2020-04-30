@@ -1,34 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { getTime } from "../redux/airportboard.selectors";
 
-const Departure = ({ scoreboardList }) => {
-  return (
-    <table className="scoreboardList">
-      <thead className="scoreboardList-header">
-        <tr className="scoreboardList-header__tr">
-          <th>Термінал</th>
-          <th>Розклад</th>
-          <th>Призначення</th>
-          <th>Статус</th>
-          <th>Авіакомпанія</th>
-          <th>Рейс</th>
+const Departure = ({ scoreboardList, allFlights }) => {
+  useEffect(() => {
+    ;
+  }, []);
+  console.log(allFlights)
+  if (allFlights.length > 0) {
+    return allFlights.map((item) => (
+      <tbody className="scoreboardList-body">
+        <tr className="scoreboardList-body__tr">
+          <td>{item.term}</td>
+          <td>{getTime(item.actual)}</td>
+          <td>{item["airportToID.city"]}</td>
+          <td>{item.status === "CX" ? "Скасовано" : item.status}</td>
+          <td>{item.airline.ua.name}</td>
+          <td>{item.codeShareData[0].codeShare}</td>
         </tr>
-      </thead>
-
-      {scoreboardList.departure &&
-        scoreboardList.departure.map((item) => (
-          <tbody className="scoreboardList-body">
-            <tr className="scoreboardList-body__tr">
-              <td>{item.term}</td>
-              <td>{item.actual}</td>
-              <td>{item["airportToID.city"]}</td>
-              <td>{item.status}</td>
-              <td>{item.airline.ua.name}</td>
-              <td>{item.codeShareData[0].codeShare}</td>
-            </tr>
-          </tbody>
-        ))}
-    </table>
-  );
+      </tbody>
+    ));
+  } else if (allFlights === []  ) {
+    return <div>We have a trable</div>;
+  } else {
+    return (
+      scoreboardList.departure &&
+      scoreboardList.departure.map((item) => (
+        <tbody className="scoreboardList-body">
+          <tr className="scoreboardList-body__tr">
+            <td>{item.term}</td>
+            <td>{getTime(item.actual)}</td>
+            <td>{item["airportToID.city"]}</td>
+            <td>{item.status === "CX" ? "Скасовано" : item.status}</td>
+            <td>{item.airline.ua.name}</td>
+            <td>{item.codeShareData[0].codeShare}</td>
+          </tr>
+        </tbody>
+      ))
+    );
+  }
 };
 
 export default Departure;
