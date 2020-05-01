@@ -25,13 +25,13 @@
     height: 60px;
     background-color: #e7efec;
     position: relative;
-    &-input{
+    &-input {
       position: relative;
     }
-    &-icon{
+    &-icon {
       position: absolute;
       left: 3px;
-      top: 20px
+      top: 20px;
     }
     &-search {
       height: 60px;
@@ -68,54 +68,56 @@
   min-width: 75%;
   margin-top: 35px;
   margin-bottom: 20px;
-  &__btn {
+
+  &__btn-arrival {
     left: 50%;
-    align-items: center;
-    height: 60px;
-    width: 50%;
-    font-size: 24px;
-    font-weight: 600;
-    border-radius: 0px 0px 0px 0;
-    text-transform: uppercase;
+    border-radius: 0px 60px 0px 0;
     color: #fff;
-    background: #73d2f0;
-    text-decoration: none;
-    &:first-child {
-      left: 50%;
-      // align-items: center;
-      height: 60px;
-      width: 50%;
-      font-size: 24px;
-      font-weight: 600;
-      border-radius: 60px 0px 0px 0;
+    background: #1eb7ee;
+    &_active {
+      color: #fff;
+      background: #1eb7ee;
+            left: 50%;
+      border-radius: 0px 60px 0px 0;
     }
-    &:last-child {
+    &_inactive{
+      color: #1eb7ee  ;
+      background: #fff;
+      z-index: 1;
       left: 50%;
-      align-items: center;
-      height: 60px;
-      width: 50%;
-      font-size: 24px;
-      font-weight: 600;
       border-radius: 0px 60px 0px 0;
     }
   }
-
-  &__btn-active {
-    position: relative;
-    align-items: center;
-    height: 60px;
-    width: 50%;
-    font-size: 24px;
-    font-weight: 600;
-    border-radius: 60px 0px 0 0;
-    text-transform: uppercase;
-    color: #73d2f0;
-    background: #fff;
+  &__btn-departure {
+    left: 50%;
+    border-radius: 60px 0px 0px 0;
+    color: #1eb7ee;
+    background: #ffffff;
     text-decoration: none;
-    cursor: pointer;
+    &_active {
+      color: #fff;
+      background: #1eb7ee;
+      z-index: 1;
+      left: 50%;
+      border-radius: 60px 0px 0px 0;
+    }
+    &_inactive{
+      color: #1eb7ee;
+      background: #fff;
+      left: 50%;
+      border-radius: 60px 0px 0px 0;
+    }
   }
 }
-
+.btn {
+  align-items: center;
+  height: 60px;
+  width: 50%;
+  font-size: 24px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+}
 .scoreboardList {
   width: 75%;
   border-collapse: collapse;

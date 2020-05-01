@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, Route, Link, Switch, useParams } from "react-router-dom";
 import Arrival from "./Arrival";
 import Departure from "./Departure";
@@ -9,9 +9,19 @@ import FlightLandSharpIcon from "@material-ui/icons/FlightLandSharp";
 import FlightTakeoffSharpIcon from "@material-ui/icons/FlightTakeoffSharp";
 
 const Main = ({ scoreboardList }) => {
-  const a = useParams();
-  console.log(a);
+  const location = useLocation();
   const [value, setValue] = useState("");
+  const [status, setActive] = useState("departure");
+  const arrivalClass = status === "arrival" ? "_active" : "_inactive";
+  const departureClass = status === "departure" ? "_active" : "_inactive";
+  
+  useEffect(() => {
+    if (location.pathname.includes("arrivel")) {
+      setActive("arrival");
+    } else if (location.pathname.includes("departure")) {
+      setActive("departure");
+    }
+  }, [location]);
 
   const search = qs.parse(useLocation().search, { ignoreQueryPrefix: true })
     .search;
@@ -20,10 +30,11 @@ const Main = ({ scoreboardList }) => {
     : scoreboardList.departure.filter((flight) => {
         return flight.codeShareData[0].codeShare === search;
       });
-
+   
   const onChange = (event) => {
     setValue(event.target.value);
   };
+
 
   return (
     <div className="wrap">
@@ -45,16 +56,16 @@ const Main = ({ scoreboardList }) => {
             <SearchSharpIcon className="scoreboard__form-icon" />
           </div>
           <button className="scoreboard__form-submit" type="submit">
-            <Link to={`/departure?search=${value}`}>Пошук</Link>
+            <Link to={`/departures?search=${value}`}>Пошук</Link>
           </button>
         </form>
       </section>
       <div className="conteiner">
-        <button className={`conteiner__btn`}>
+        <button className={`btn conteiner__btn-departure${departureClass}`}>
           <FlightTakeoffSharpIcon />
           <Link to="/departure">departure</Link>
         </button>
-        <button className="conteiner__btn">
+        <button className={`btn conteiner__btn-arrival${arrivalClass}`}>
           <FlightLandSharpIcon />
           <Link to="/arrivel">arrivel</Link>
         </button>
@@ -73,12 +84,12 @@ const Main = ({ scoreboardList }) => {
 
         <Switch>
           <Route path="/arrivel">
-            <Arrival scoreboardList={scoreboardList} />
+            <Arrival scoreboardList={scoreboardList} allFlights={allFlights}/>
           </Route>
           <Route path="/departure">
             <Departure
               scoreboardList={scoreboardList}
-              allFlights={allFlights}
+              value={value}
             />
           </Route>
         </Switch>
