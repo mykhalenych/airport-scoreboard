@@ -1,65 +1,71 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, Route, Link, Switch, useParams } from "react-router-dom";
-import Arrival from "./Arrival";
-import Departure from "./Departure";
+import { useLocation, Link, Switch, useParams } from "react-router-dom";
 import "./main.scss";
-import qs from "qs";
-import SearchSharpIcon from "@material-ui/icons/SearchSharp";
 import FlightLandSharpIcon from "@material-ui/icons/FlightLandSharp";
 import FlightTakeoffSharpIcon from "@material-ui/icons/FlightTakeoffSharp";
+import qs from "qs";
+import * as actions from "../redux/airportboard.action";
+import { connect } from "react-redux";
+import FlightBody from "./FlightBody";
+import { airoportBoardListSelector } from "../redux/airportboard.selectors";
 
-const Main = ({ scoreboardList }) => {
+const Main = ({ scoreboardList, getScoreBoardList }) => {
+  useEffect(() => {
+    getScoreBoardList();
+  }, []);
+
   const location = useLocation();
-  const [value, setValue] = useState("");
   const [status, setActive] = useState("departure");
+
   const arrivalClass = status === "arrival" ? "_active" : "_inactive";
   const departureClass = status === "departure" ? "_active" : "_inactive";
-  
   useEffect(() => {
-    if (location.pathname.includes("arrivel")) {
+    if (location.pathname.includes("arrival")) {
       setActive("arrival");
     } else if (location.pathname.includes("departure")) {
       setActive("departure");
     }
   }, [location]);
 
+  let { direction } = useParams();
+  let renderList = [];
+
+  if (scoreboardList) {
+    if (direction === "arrival") {
+      renderList = scoreboardList.arrival
+        .filter((item) => item.airline !== undefined)
+        .map((item) => {
+          return {
+            ...item,
+            city: item["airportFromID.city_en"],
+            time: item.timeArrShedule,
+          };
+        })
+        .sort((a, b) => a.time - b.time);
+    } else {
+      renderList = scoreboardList.departure
+        .filter((item) => item.airline !== undefined)
+        .map((item) => {
+          return {
+            ...item,
+            city: item["airportToID.city_en"],
+            time: item.timeArrShedule,
+          };
+        })
+        .sort((a, b) => a.time - b.time);
+    }
+  }
+
   const search = qs.parse(useLocation().search, { ignoreQueryPrefix: true })
     .search;
-  let allFlights = !search
-    ? scoreboardList
-    : scoreboardList.departure.filter((flight) => {
-        return flight.codeShareData[0].codeShare === search;
+  let searchedFlight = !search
+    ? null
+    : scoreboardList.departure.filter((flightItem) => {
+        return flightItem.codeShareData[0].codeShare === search;
       });
-   
-  const onChange = (event) => {
-    setValue(event.target.value);
-  };
-
 
   return (
-    <div className="wrap">
-      <section className="scoreboard">
-        <h2 className="scoreboard__title">Пошук Рейсу</h2>
-        <form
-          //onSubmit={handleSubmit}
-          className="scoreboard__form"
-        >
-          <div className="scoreboard__form">
-            <input
-              className="scoreboard__form-search"
-              defaultValue={"Номер рейсу або місто"}
-              value={value}
-              onChange={onChange}
-              name="input"
-              placeholder="Для пошуку напишіть номер рейсу"
-            />
-            <SearchSharpIcon className="scoreboard__form-icon" />
-          </div>
-          <button className="scoreboard__form-submit" type="submit">
-            <Link to={`/departures?search=${value}`}>Пошук</Link>
-          </button>
-        </form>
-      </section>
+    <>
       <div className="conteiner">
         <button className={`btn conteiner__btn-departure${departureClass}`}>
           <FlightTakeoffSharpIcon />
@@ -67,35 +73,35 @@ const Main = ({ scoreboardList }) => {
         </button>
         <button className={`btn conteiner__btn-arrival${arrivalClass}`}>
           <FlightLandSharpIcon />
-          <Link to="/arrivel">arrivel</Link>
+          <Link to="/arrival">arrival</Link>
         </button>
       </div>
       <table className="scoreboardList">
         <thead className="scoreboardList-header">
           <tr className="scoreboardList-header__tr">
-            <th>Термінал</th>
-            <th>Розклад</th>
-            <th>Призначення</th>
-            <th>Статус</th>
-            <th>Авіакомпанія</th>
-            <th>Рейс</th>
+            <th>Terminal</th>
+            <th>Schedule</th>
+            <th>Destination	</th>
+            <th>Status</th>
+            <th>Airline</th>
+            <th>Flight</th>
           </tr>
         </thead>
-
         <Switch>
-          <Route path="/arrivel">
-            <Arrival scoreboardList={scoreboardList} allFlights={allFlights}/>
-          </Route>
-          <Route path="/departure">
-            <Departure
-              scoreboardList={scoreboardList}
-              value={value}
-            />
-          </Route>
+          <FlightBody renderList={renderList} searchedFlight={searchedFlight} />
         </Switch>
       </table>
-    </div>
+    </>
   );
 };
 
-export default Main;
+const mapDispatch = {
+  getScoreBoardList: actions.getBoardList,
+};
+const mapState = (state) => {
+  return {
+    scoreboardList: airoportBoardListSelector(state),
+  };
+};
+
+export default connect(mapState, mapDispatch)(Main);

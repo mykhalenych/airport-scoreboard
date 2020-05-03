@@ -1,49 +1,55 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { getTime } from "../redux/airportboard.selectors";
 
-const Departure = ({ scoreboardList, allFlights }) => {
-  useEffect(() => {}, []);
-  console.log(allFlights);
-
-  const searchFlightRender = () => {
-    if (!allFlights.length)
-      return (
-        <tr>
-          <td>NO RESULTS</td>
-        </tr>
-      );
-    // if (allFlights.length > 0) {
-    return allFlights.map((item) => (
-      <tbody className="scoreboardList-body">
-        <tr className="scoreboardList-body__tr">
-          <td>{item.term}</td>
-          <td>{getTime(item.actual)}</td>
-          <td>{item["airportToID.city"]}</td>
-          <td>{item.status === "CX" ? "Скасовано" : item.status}</td>
-          <td>{item.airline.ua.name}</td>
-          <td>{item.codeShareData[0].codeShare}</td>
-        </tr>
-      </tbody>
-    ));
-  };
-
-  //}
-
-  return (
-    scoreboardList.departure &&
-    scoreboardList.departure.map((item) => (
-      <tbody className="scoreboardList-body">
-        <tr className="scoreboardList-body__tr">
-          <td>{item.term}</td>
-          <td>{getTime(item.actual)}</td>
-          <td>{item["airportToID.city"]}</td>
-          <td>{item.status === "CX" ? "Скасовано" : item.status}</td>
-          <td>{item.airline.ua.name}</td>
-          <td>{item.codeShareData[0].codeShare}</td>
-        </tr>
-      </tbody>
-    ))
-  );
+const FlightBody = ({ renderList, searchedFlight }) => {
+  if (searchedFlight !== null) {
+    if (searchedFlight.length === 0) {
+      return <div className="error__tr">Flight not found</div>;
+    } else {
+      return searchedFlight.map((item) => (
+        <tbody key={Math.random()} className="scoreboardList-body">
+          <tr className="scoreboardList-body__tr">
+            <td>{item.term}</td>
+            <td>{getTime(item.actual)}</td>
+            <td>{item["airportToID.city_en"]}</td>
+            <td>{item.status === "CX" ? "Canceled" : item.status}</td>
+            <td className="scoreboardList-body__tr-item">
+              {
+                <img
+                  className="image__logo"
+                  src={item.airline.en.logoSmallName}
+                  alt="logo"
+                />
+              }
+              {item.codeShareData[0].airline.en.name}
+            </td>
+            <td>{item.codeShareData[0].codeShare}</td>
+          </tr>
+        </tbody>
+      ));
+    }
+  }
+  return renderList.map((item) => (
+    <tbody key={Math.random()} className="scoreboardList-body">
+      <tr className="scoreboardList-body__tr">
+        <td>{item.term}</td>
+        <td>{getTime(item.actual)}</td>
+        <td>{item.city}</td>
+        <td>{item.status === "CX" ? "Canceled" : item.status}</td>
+        <td className="scoreboardList-body__tr-item">
+          {
+            <img
+              className="image__logo"
+              src={item.airline.en.logoSmallName}
+              alt="logo"
+            />
+          }
+          {item.codeShareData[0].airline.en.name}
+        </td>{" "}
+        <td>{item.codeShareData[0].codeShare}</td>
+      </tr>
+    </tbody>
+  ));
 };
 
-export default Departure;
+export default FlightBody;

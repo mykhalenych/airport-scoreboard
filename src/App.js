@@ -1,29 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Main from "./components/Main";
-import { airoportBoardListSelector } from "./redux/airportboard.selectors";
-import * as actions from "./redux/airportboard.action";
-import { connect } from "react-redux";
 import { Route } from "react-router-dom";
+import Header from "./components/Header";
+import { BrowserRouter, Switch } from "react-router-dom";
 
-const App = ({ getScoreBoardList, scoreboardList }) => {
-  useEffect(() => {
-    getScoreBoardList();
-  }, []);
-  //Route params
+const App = () => {
   return (
-    <Route path="/:direction?/">
-      <Main scoreboardList={scoreboardList} />
-    </Route>
+    <div className="wrap">
+    <BrowserRouter>
+        <Header />
+        <Switch>
+          <Route path="/:direction?/:flight?">
+            <Main  />
+          </Route>
+        </Switch>
+    </BrowserRouter>
+      </div>
   );
 };
 
-const mapDispatch = {
-  getScoreBoardList: actions.getBoardList,
-};
-const mapState = (state) => {
-  return {
-    scoreboardList: airoportBoardListSelector(state),
-  };
-};
-
-export default connect(mapState, mapDispatch)(App);
+export default App

@@ -13,15 +13,6 @@ export const boardListRecived = (scoreBoardList) => {
   };
   return action;
 };
-export const getFlight = (flightNumber) => {
-  const action = {
-    type: GET_FLIGHT,
-    payload: {
-      flightNumber,
-    },
-  };
-  return action;
-};
 
 
 export const getBoardList = () => {
@@ -31,6 +22,7 @@ export const getBoardList = () => {
   };
   return thunkAction;
 };
+
 
 
 

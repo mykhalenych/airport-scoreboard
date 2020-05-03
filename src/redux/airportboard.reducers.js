@@ -1,8 +1,8 @@
-import { SCOREBOARD_LIST_RECIVED, GET_FLIGHT } from "./airportboard.action";
+import { SCOREBOARD_LIST_RECIVED } from "./airportboard.action";
 
 const initialState = {
   scoreBoardList: [],
-  flightNumber: 0,
+  flightNumber: [],
 };
 
 const boardReducer = (state = initialState, action) => {
@@ -11,11 +11,6 @@ const boardReducer = (state = initialState, action) => {
       return {
         ...state,
         scoreBoardList: action.payload.scoreBoardList,
-      };
-    case GET_FLIGHT:
-      return {
-        ...state,
-        flightNumber: action.payload.flightNumber,
       };
     default:
       return state;
