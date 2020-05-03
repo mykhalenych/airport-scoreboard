@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/airport-scoreboard/static/css/main.b45e2767.chunk.css",
+    "main.js": "/airport-scoreboard/static/js/main.0a50796a.chunk.js",
+    "main.js.map": "/airport-scoreboard/static/js/main.0a50796a.chunk.js.map",
+    "runtime-main.js": "/airport-scoreboard/static/js/runtime-main.037b15d8.js",
+    "runtime-main.js.map": "/airport-scoreboard/static/js/runtime-main.037b15d8.js.map",
+    "static/js/2.7019d091.chunk.js": "/airport-scoreboard/static/js/2.7019d091.chunk.js",
+    "static/js/2.7019d091.chunk.js.map": "/airport-scoreboard/static/js/2.7019d091.chunk.js.map",
+    "index.html": "/airport-scoreboard/index.html",
+    "precache-manifest.dbdfeefe5157ffc340b5341da93202a9.js": "/airport-scoreboard/precache-manifest.dbdfeefe5157ffc340b5341da93202a9.js",
+    "service-worker.js": "/airport-scoreboard/service-worker.js",
+    "static/css/main.b45e2767.chunk.css.map": "/airport-scoreboard/static/css/main.b45e2767.chunk.css.map",
+    "static/js/2.7019d091.chunk.js.LICENSE.txt": "/airport-scoreboard/static/js/2.7019d091.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.037b15d8.js",
+    "static/js/2.7019d091.chunk.js",
+    "static/css/main.b45e2767.chunk.css",
+    "static/js/main.0a50796a.chunk.js"
+  ]
+}
