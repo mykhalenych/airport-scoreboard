@@ -7,15 +7,15 @@ import { BrowserRouter, Switch } from "react-router-dom";
 const App = () => {
   return (
     <div className="wrap">
-    <BrowserRouter>
-        <Header />
-        <Switch>
-          <Route path="/:direction?/:flight?">
-            <Main  />
-          </Route>
-        </Switch>
-    </BrowserRouter>
-      </div>
+      <BrowserRouter>
+          <Header />
+          <Switch>
+            <Route path="/:direction?/:flight?">
+              <Main  />
+            </Route>
+          </Switch>
+      </BrowserRouter>
+    </div>
   );
 };
 

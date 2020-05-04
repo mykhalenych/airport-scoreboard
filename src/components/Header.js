@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import SearchSharpIcon from "@material-ui/icons/SearchSharp";
 import { Link } from "react-router-dom";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-// import Main from './Main'
 
 const Header = () => {
   const [searchValue, setValue] = useState("");
