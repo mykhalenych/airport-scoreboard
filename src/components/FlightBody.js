@@ -1,5 +1,5 @@
 import React from "react";
-import { getTime } from "../redux/airportboard.selectors";
+import { getTime } from "../helpers/helpers";
 
 const FlightBody = ({ renderList, searchedFlight }) => {
   if (searchedFlight !== null) {
@@ -7,7 +7,7 @@ const FlightBody = ({ renderList, searchedFlight }) => {
       return <div className="error__tr">Flight not found</div>;
     } else {
       return searchedFlight.map((item) => (
-        <tbody key={Math.random()} className="scoreboardList-body">
+        <tbody key={item.ID} className="scoreboardList-body">
           <tr className="scoreboardList-body__tr">
             <td>{item.term}</td>
             <td>{getTime(item.actual)}</td>
@@ -16,9 +16,9 @@ const FlightBody = ({ renderList, searchedFlight }) => {
             <td className="scoreboardList-body__tr-item">
               {
                 <img
-                  className="image__logo"
-                  src={item.airline.en.logoSmallName}
-                  alt="logo"
+                className="image__logo"
+                src={item.airline.en.logoSmallName}
+                alt="logo"
                 />
               }
               {item.codeShareData[0].airline.en.name}
@@ -30,7 +30,7 @@ const FlightBody = ({ renderList, searchedFlight }) => {
     }
   }
   return renderList.map((item) => (
-    <tbody key={Math.random()} className="scoreboardList-body">
+    <tbody key={item.ID}  className="scoreboardList-body">
       <tr className="scoreboardList-body__tr">
         <td>{item.term}</td>
         <td>{getTime(item.actual)}</td>

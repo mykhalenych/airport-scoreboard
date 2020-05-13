@@ -11,8 +11,12 @@ const Header = () => {
   useEffect(() => {
     if (searchValue) {
       history.push(`${location.pathname}/${searchValue}`);
+      setValue('');
+
     }
-    if (flight) setValue(flight);
+    if (flight) {setValue(flight)
+      setValue("");
+    };
   }, [direction]);
 
   const onChange = (e) => {

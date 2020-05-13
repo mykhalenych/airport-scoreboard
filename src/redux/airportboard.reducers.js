@@ -2,7 +2,6 @@ import { SCOREBOARD_LIST_RECIVED } from "./airportboard.action";
 
 const initialState = {
   scoreBoardList: [],
-  flightNumber: [],
 };
 
 const boardReducer = (state = initialState, action) => {
