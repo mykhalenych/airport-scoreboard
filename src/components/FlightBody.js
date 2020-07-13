@@ -10,15 +10,19 @@ const FlightBody = ({ renderList, searchedFlight }) => {
         <tbody key={item.ID} className="scoreboardList-body">
           <tr className="scoreboardList-body__tr">
             <td>{item.term}</td>
-            <td>{getTime(item.actual)}</td>
+            {item.actual === "undefined" ? (
+              <td>No time </td>
+            ) : (
+              <td>{item.actual}</td>
+            )}{" "}
             <td>{item["airportToID.city_en"]}</td>
             <td>{item.status === "CX" ? "Canceled" : item.status}</td>
             <td className="scoreboardList-body__tr-item">
               {
                 <img
-                className="image__logo"
-                src={item.airline.en.logoSmallName}
-                alt="logo"
+                  className="image__logo"
+                  src={item.airline.en.logoSmallName}
+                  alt="logo"
                 />
               }
               {item.codeShareData[0].airline.en.name}
@@ -30,10 +34,15 @@ const FlightBody = ({ renderList, searchedFlight }) => {
     }
   }
   return renderList.map((item) => (
-    <tbody key={item.ID}  className="scoreboardList-body">
+    <tbody key={item.ID} className="scoreboardList-body">
       <tr className="scoreboardList-body__tr">
+        {console.log(item)}
         <td>{item.term}</td>
-        <td>{getTime(item.actual)}</td>
+        {item.actual === "undefined" ? (
+          <td>No time </td>
+        ) : (
+          <td>{item.actual}</td>
+        )}
         <td>{item.city}</td>
         <td>{item.status === "CX" ? "Canceled" : item.status}</td>
         <td className="scoreboardList-body__tr-item">
